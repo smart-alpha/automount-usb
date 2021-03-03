@@ -22,6 +22,7 @@ if [[ $# -ne 2 ]]; then
     usage
 fi
 
+USERNAME=$(whoami) 
 ACTION=$1
 DEVBASE=$2
 DEVICE="/dev/${DEVBASE}"
@@ -43,7 +44,7 @@ do_mount()
 
     # Figure out a mount point to use
     LABEL=${ID_FS_LABEL}
-    if grep -q " /media/${LABEL} " /etc/mtab; then
+    if grep -q " /media/${USERNAME}/${LABEL} " /etc/mtab; then
         # Already in use, make a unique one
         LABEL+="-${DEVBASE}"
     fi
@@ -54,7 +55,7 @@ do_mount()
         DEV_LABEL="${DEVBASE}"
     fi
 
-    MOUNT_POINT="/media/${DEV_LABEL}"
+    MOUNT_POINT="/media/${USERNAME}/${DEV_LABEL}"
 
     ${log} "Mount point: ${MOUNT_POINT}"
 
